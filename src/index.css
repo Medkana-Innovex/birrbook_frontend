@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cbe: #C040BE;
+  --cbe-dark: #A02FA0;
+  --cbe-light: #D060D0;
+  --cbe-muted: rgba(192, 64, 190, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input {
+  -webkit-text-fill-color: inherit;
+}
+
+input::-webkit-spelling-error,
+input::-moz-spelling-error {
+  text-decoration: none;
+}
+
+body {
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f9fafb;
+  color: #111827;
+}
