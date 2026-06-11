@@ -22,7 +22,7 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await api.post('/admin/login', form);
+      const { data } = await api.post('/admin/login', { ...form, phone: '+251' + form.phone.replace(/^\+251/, '') });
       dispatch(setAdminCredentials({ accessToken: data.accessToken }));
       navigate('/admin/users');
     } catch (err) {
