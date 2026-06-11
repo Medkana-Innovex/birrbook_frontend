@@ -26,7 +26,8 @@ export default function AdminLoginPage() {
       dispatch(setAdminCredentials({ accessToken: data.accessToken }));
       navigate('/admin/users');
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid credentials.');
+      const e = err.response?.data?.error;
+      setError(Array.isArray(e) ? e.map(i => i.message).join(', ') : e || 'Invalid credentials.');
     } finally {
       setLoading(false);
     }
