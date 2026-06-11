@@ -5,43 +5,66 @@ import { adminLogout } from '../../store/slices/adminSlice';
 import api from '../../services/api';
 import Spinner from '../../components/ui/Spinner';
 
-function StatCard({ label, value }) {
+function StatCard({ label, value, sub }) {
   return (
-    <div className="bg-white rounded-2xl p-5 border border-gray-100">
-      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">{label}</p>
+    <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">{label}</p>
       <p className="text-2xl font-bold text-gray-900">{value}</p>
+      {sub && <p className="text-xs text-gray-400 mt-1">{sub}</p>}
     </div>
   );
 }
 
 function UserRow({ user }) {
+  const [open, setOpen] = useState(false);
   const initials = user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  const joined = new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
   return (
-    <div className="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0">
-      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: 'var(--cbe)' }}>
-        {initials}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-gray-900">{user.name}</p>
-        <p className="text-xs text-gray-400">{user.phone}</p>
-      </div>
-      <div className="hidden sm:flex items-center gap-6 text-right shrink-0">
-        <div>
-          <p className="text-xs text-gray-400">Transactions</p>
-          <p className="text-sm font-semibold text-gray-900">{user.stats.totalTransactions}</p>
+    <div className="border-b border-gray-50 last:border-0">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center gap-4 py-4 px-6 hover:bg-gray-50 transition-colors text-left"
+      >
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0" style={{ backgroundColor: 'var(--cbe)' }}>
+          {initials}
         </div>
-        <div>
-          <p className="text-xs text-green-500">In</p>
-          <p className="text-sm font-semibold text-gray-900">{user.stats.totalIn.toLocaleString()}</p>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-gray-900">{user.name}</p>
+          <p className="text-xs text-gray-400">{user.phone}</p>
         </div>
-        <div>
-          <p className="text-xs text-red-400">Out</p>
-          <p className="text-sm font-semibold text-gray-900">{user.stats.totalOut.toLocaleString()}</p>
+        <div className="text-right shrink-0 mr-2">
+          <p className="text-xs text-gray-400">{user.stats.totalTransactions} txns</p>
+          <p className="text-xs text-gray-400">{joined}</p>
         </div>
-      </div>
-      <div className="sm:hidden text-right shrink-0">
-        <p className="text-xs text-gray-400">{user.stats.totalTransactions} txns</p>
-      </div>
+        <svg
+          className="w-4 h-4 text-gray-300 shrink-0 transition-transform duration-200"
+          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="px-6 pb-5 pt-1 bg-gray-50 grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <Detail label="Full name" value={user.name} />
+          <Detail label="Phone" value={user.phone} />
+          <Detail label="Email" value={user.email || '—'} />
+          <Detail label="Joined" value={joined} />
+          <Detail label="Transactions" value={user.stats.totalTransactions} />
+          <Detail label="User ID" value={user.id.slice(0, 8) + '…'} mono />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Detail({ label, value, mono }) {
+  return (
+    <div>
+      <p className="text-xs text-gray-400 mb-0.5">{label}</p>
+      <p className={`text-sm font-medium text-gray-800 truncate ${mono ? 'font-mono' : ''}`}>{value}</p>
     </div>
   );
 }
@@ -80,6 +103,7 @@ export default function AdminUsersPage() {
   const [meta, setMeta] = useState({ total: 0, totalPages: 1 });
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
 
   const fetchUsers = async (p = 1) => {
     setLoading(true);
@@ -104,8 +128,13 @@ export default function AdminUsersPage() {
     navigate('/admin/login');
   };
 
-  const totalIn = users.reduce((s, u) => s + u.stats.totalIn, 0);
-  const totalOut = users.reduce((s, u) => s + u.stats.totalOut, 0);
+  const filtered = users.filter(u =>
+    u.name.toLowerCase().includes(search.toLowerCase()) ||
+    u.phone.includes(search) ||
+    (u.email || '').toLowerCase().includes(search.toLowerCase())
+  );
+
+  const totalTxns = users.reduce((s, u) => s + u.stats.totalTransactions, 0);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -133,7 +162,6 @@ export default function AdminUsersPage() {
 
       <div className="max-w-5xl mx-auto px-6 py-8">
 
-        {/* Page title */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Users</h1>
           <p className="text-gray-400 text-sm mt-0.5">{meta.total} registered users</p>
@@ -141,26 +169,38 @@ export default function AdminUsersPage() {
 
         {loading ? <Spinner /> : (
           <>
-            {/* Summary */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <StatCard label="Total Users" value={meta.total} />
-              <StatCard label="Total In (ETB)" value={totalIn.toLocaleString()} />
-              <StatCard label="Total Out (ETB)" value={totalOut.toLocaleString()} />
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <StatCard label="Total Users" value={meta.total} sub="all time registrations" />
+              <StatCard label="Total Transactions" value={totalTxns} sub="across all users" />
             </div>
 
-            {/* User list */}
-            <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-50">
-                <h2 className="text-sm font-semibold text-gray-900">All Users</h2>
+            <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+              <div className="px-6 py-4 border-b border-gray-50 flex items-center justify-between gap-4">
+                <h2 className="text-sm font-semibold text-gray-900 shrink-0">All Users</h2>
+                <div className="relative w-full max-w-xs">
+                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" />
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="Search by name, phone or email…"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl outline-none focus:ring-2 text-gray-700 placeholder-gray-300"
+                    style={{ '--tw-ring-color': 'var(--cbe)' }}
+                  />
+                </div>
               </div>
-              <div className="px-6">
-                {users.length === 0 ? (
-                  <p className="text-sm text-gray-400 py-10 text-center">No users yet</p>
-                ) : (
-                  users.map(u => <UserRow key={u.id} user={u} />)
-                )}
-              </div>
-              {users.length > 0 && (
+
+              {filtered.length === 0 ? (
+                <p className="text-sm text-gray-400 py-10 text-center">
+                  {search ? 'No users match your search' : 'No users yet'}
+                </p>
+              ) : (
+                filtered.map(u => <UserRow key={u.id} user={u} />)
+              )}
+
+              {!search && users.length > 0 && (
                 <div className="px-6 pb-6">
                   <Pagination page={page} totalPages={meta.totalPages} onPage={handlePage} />
                 </div>
