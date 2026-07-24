@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { logout } from '../../store/slices/authSlice';
 import AppLayout from '../../components/layout/AppLayout';
 
@@ -13,6 +14,7 @@ function InfoRow({ label, value }) {
 }
 
 export default function ProfilePage() {
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(s => s.auth.user);
@@ -44,11 +46,11 @@ export default function ProfilePage() {
 
         {/* Info card */}
         <div className="bg-white rounded-2xl border border-gray-100 px-5 mb-4">
-          <InfoRow label="Full name" value={user?.name} />
-          <InfoRow label="Phone" value={user?.phone} />
-          <InfoRow label="Email" value={user?.email} />
-          <InfoRow label="Member since" value={user?.createdAt
-            ? new Date(user.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+          <InfoRow label={t('profile.fullName')} value={user?.name} />
+          <InfoRow label={t('profile.phone')} value={user?.phone} />
+          <InfoRow label={t('profile.email')} value={user?.email} />
+          <InfoRow label={t('profile.memberSince')} value={user?.createdAt
+            ? new Date(user.createdAt).toLocaleDateString(i18n.language === 'am' ? 'am-ET' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
             : null}
           />
         </div>
@@ -58,7 +60,7 @@ export default function ProfilePage() {
           onClick={handleLogout}
           className="w-full py-3.5 rounded-2xl text-red-500 font-semibold text-sm bg-red-50 hover:bg-red-100 transition-all"
         >
-          Sign Out
+          {t('profile.signOut')}
         </button>
 
       </div>

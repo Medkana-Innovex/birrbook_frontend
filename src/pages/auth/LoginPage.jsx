@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { setCredentials } from '../../store/slices/authSlice';
 import api from '../../services/api';
 import EyeIcon from '../../components/ui/EyeIcon';
+import LanguageSwitcher from '../../components/ui/LanguageSwitcher';
 
 const focusStyle = e => (e.currentTarget.style.boxShadow = '0 0 0 2px var(--cbe)');
 const blurStyle  = e => (e.currentTarget.style.boxShadow = 'none');
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form, setForm] = useState({ phone: '', password: '' });
@@ -26,7 +29,7 @@ export default function LoginPage() {
       dispatch(setCredentials({ accessToken: data.accessToken, refreshToken: data.refreshToken }));
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid phone number or password.');
+      setError(err.response?.data?.error || t('auth.login.invalidCredentials'));
     } finally {
       setLoading(false);
     }
@@ -44,11 +47,11 @@ export default function LoginPage() {
           <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur">
             <span className="text-white text-4xl font-bold">B</span>
           </div>
-          <h3 className="text-3xl font-bold text-white leading-snug mb-4">
-            Welcome<br />back.
+          <h3 className="text-3xl font-bold text-white leading-snug mb-4 whitespace-pre-line">
+            {t('auth.login.welcomeBack')}
           </h3>
           <p className="text-white/60 text-sm leading-relaxed">
-            Sign in to continue tracking your finances with Birrbook.
+            {t('auth.login.signInToContinue')}
           </p>
         </div>
       </div>
@@ -57,20 +60,23 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center px-8 py-12 bg-white">
         <div className="w-full max-w-sm">
 
-          <div className="flex items-center gap-2 mb-10">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--cbe)' }}>
-              <span className="text-white font-bold text-sm">B</span>
+          <div className="flex items-center justify-between gap-2 mb-10">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--cbe)' }}>
+                <span className="text-white font-bold text-sm">B</span>
+              </div>
+              <span className="font-bold text-gray-900">Birrbook</span>
             </div>
-            <span className="font-bold text-gray-900">Birrbook</span>
+            <LanguageSwitcher />
           </div>
 
-          <h2 className="text-2xl font-bold text-gray-900 mb-1">Sign in</h2>
-          <p className="text-gray-400 text-sm mb-8">Enter your credentials to continue</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-1">{t('auth.login.signIn')}</h2>
+          <p className="text-gray-400 text-sm mb-8">{t('auth.login.enterCredentials')}</p>
 
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>
 
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-700">Phone number</label>
+              <label className="block text-sm font-medium text-gray-700">{t('auth.login.phoneNumber')}</label>
               <div className="flex rounded-xl border border-gray-200 overflow-hidden transition-all" onFocusCapture={focusStyle} onBlurCapture={blurStyle}>
                 <div className="flex items-center px-3 bg-gray-50 border-r border-gray-200">
                   <span className="text-sm text-gray-500 font-medium">+251</span>
@@ -84,7 +90,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-gray-700">{t('auth.login.password')}</label>
               <div className="flex rounded-xl border border-gray-200 overflow-hidden transition-all" onFocusCapture={focusStyle} onBlurCapture={blurStyle}>
                 <input
                   type={showPassword ? 'text' : 'password'} name="password" value={form.password} onChange={handleChange}
@@ -104,17 +110,17 @@ export default function LoginPage() {
             <button
               type="submit" disabled={loading}
               className="w-full py-3.5 rounded-xl text-white font-semibold text-sm disabled:opacity-50 transition-all"
-              style={{ backgroundColor: 'var(--cbe)', boxShadow: '0 4px 14px rgba(192,64,190,0.3)' }}
+              style={{ backgroundColor: 'var(--cbe)', boxShadow: '0 4px 14px rgba(var(--cbe-rgb),0.3)' }}
               onMouseEnter={e => !loading && (e.currentTarget.style.backgroundColor = 'var(--cbe-dark)')}
               onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'var(--cbe)')}
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? t('auth.login.signingIn') : t('auth.login.signInButton')}
             </button>
           </form>
 
           <p className="text-center text-sm text-gray-400 mt-6">
-            Don't have an account?{' '}
-            <Link to="/register" className="font-semibold" style={{ color: 'var(--cbe)' }}>Register</Link>
+            {t('auth.login.noAccount')}{' '}
+            <Link to="/register" className="font-semibold" style={{ color: 'var(--cbe)' }}>{t('auth.login.register')}</Link>
           </p>
         </div>
       </div>

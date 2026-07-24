@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import api from '../../services/api';
 
@@ -9,6 +10,7 @@ function genExternalId() {
 }
 
 export default function SimulatePage() {
+  const { t } = useTranslation();
   const [amount, setAmount] = useState('');
   const [phone, setPhone] = useState('');
   const [direction, setDirection] = useState('OUT');
@@ -24,8 +26,8 @@ export default function SimulatePage() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (!amount || parseFloat(amount) <= 0) return setError('Enter a valid amount.');
-    if (!phone.trim()) return setError('Enter your phone number.');
+    if (!amount || parseFloat(amount) <= 0) return setError(t('simulate.invalidAmount'));
+    if (!phone.trim()) return setError(t('simulate.enterPhone'));
 
     setLoading(true);
     setError('');
@@ -41,7 +43,7 @@ export default function SimulatePage() {
       });
       setSuccess(true);
     } catch (err) {
-      setError(err.response?.data?.error || 'Transaction failed.');
+      setError(err.response?.data?.error || t('simulate.transactionFailed'));
     } finally {
       setLoading(false);
     }
@@ -55,14 +57,14 @@ export default function SimulatePage() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-1">Transaction Successful</h2>
-        <p className="text-white/60 text-sm mb-2">{direction === 'OUT' ? 'Payment sent' : 'Payment received'}</p>
-        <p className="text-4xl font-bold text-white mb-8">ETB {parseFloat(amount).toLocaleString()}</p>
+        <h2 className="text-2xl font-bold text-white mb-1">{t('simulate.transactionSuccessful')}</h2>
+        <p className="text-white/60 text-sm mb-2">{direction === 'OUT' ? t('simulate.paymentSent') : t('simulate.paymentReceived')}</p>
+        <p className="text-4xl font-bold text-white mb-8">{t('common.etb')} {parseFloat(amount).toLocaleString()}</p>
         <button
           onClick={() => { setSuccess(false); setAmount(''); setReason(''); setPhone(''); }}
           className="px-8 py-3.5 bg-white/20 text-white font-semibold rounded-2xl text-sm"
         >
-          New Transaction
+          {t('simulate.newTransaction')}
         </button>
       </div>
     );
@@ -73,8 +75,8 @@ export default function SimulatePage() {
 
       {/* Header */}
       <div className="px-5 pt-12 pb-6" style={{ backgroundColor: 'var(--cbe)' }}>
-        <h1 className="text-white font-bold text-lg">CBE Transaction</h1>
-        <p className="text-white/60 text-xs mt-0.5">Commercial Bank of Ethiopia</p>
+        <h1 className="text-white font-bold text-lg">{t('simulate.headerTitle')}</h1>
+        <p className="text-white/60 text-xs mt-0.5">{t('simulate.headerSubtitle')}</p>
       </div>
 
       {/* Direction tabs */}
@@ -89,16 +91,16 @@ export default function SimulatePage() {
               : { backgroundColor: 'white', color: '#9ca3af', borderColor: '#f3f4f6' }
             }
           >
-            {d === 'OUT' ? '↑ Send' : '↓ Receive'}
+            {d === 'OUT' ? `↑ ${t('simulate.send')}` : `↓ ${t('simulate.receive')}`}
           </button>
         ))}
       </div>
 
       {/* Amount */}
       <div className="flex flex-col items-center px-5 pt-10 pb-8">
-        <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">Amount</p>
+        <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-4">{t('simulate.amount')}</p>
         <div className="flex items-center gap-2">
-          <span className="text-3xl font-bold text-gray-400">ETB</span>
+          <span className="text-3xl font-bold text-gray-400">{t('common.etb')}</span>
           <input
             type="text" inputMode="decimal"
             value={amount} onChange={e => handleAmount(e.target.value)}
@@ -114,7 +116,7 @@ export default function SimulatePage() {
 
         {/* Phone */}
         <div>
-          <label className="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-2">Phone number</label>
+          <label className="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-2">{t('simulate.phoneNumber')}</label>
           <div className="flex items-center border-b border-gray-200 pb-3 focus-within:border-[var(--cbe)] transition-colors">
             <span className="text-sm text-gray-400 mr-2 shrink-0">+251</span>
             <input
@@ -127,10 +129,10 @@ export default function SimulatePage() {
 
         {/* Reason */}
         <div>
-          <label className="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-2">Description</label>
+          <label className="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-2">{t('simulate.description')}</label>
           <input
             type="text" value={reason} onChange={e => { setReason(e.target.value); setError(''); }}
-            placeholder="What is this transaction for? (optional)"
+            placeholder={t('simulate.descriptionPlaceholder')}
             spellCheck={false}
             className="w-full border-b border-gray-200 pb-3 text-sm text-gray-900 outline-none placeholder-gray-300 bg-transparent focus:border-[var(--cbe)] transition-colors"
           />
@@ -138,7 +140,7 @@ export default function SimulatePage() {
 
         {/* Category pills */}
         <div>
-          <label className="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-3">Category</label>
+          <label className="block text-xs font-medium text-gray-500 uppercase tracking-widest mb-3">{t('simulate.category')}</label>
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map(c => (
               <button
@@ -150,7 +152,7 @@ export default function SimulatePage() {
                   : { backgroundColor: '#f3f4f6', color: '#6b7280' }
                 }
               >
-                {c}
+                {t(`simulate.categories.${c}`)}
               </button>
             ))}
           </div>
@@ -166,11 +168,11 @@ export default function SimulatePage() {
         <button
           onClick={handleSubmit} disabled={loading}
           className="w-full py-4 rounded-2xl text-white font-bold text-base disabled:opacity-50 transition-all"
-          style={{ backgroundColor: 'var(--cbe)', boxShadow: '0 6px 20px rgba(192,64,190,0.35)' }}
+          style={{ backgroundColor: 'var(--cbe)', boxShadow: '0 6px 20px rgba(var(--cbe-rgb),0.35)' }}
           onMouseEnter={e => !loading && (e.currentTarget.style.backgroundColor = 'var(--cbe-dark)')}
           onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'var(--cbe)')}
         >
-          {loading ? 'Processing...' : direction === 'OUT' ? 'Send Payment' : 'Receive Payment'}
+          {loading ? t('simulate.processing') : direction === 'OUT' ? t('simulate.sendPayment') : t('simulate.receivePayment')}
         </button>
       </div>
 

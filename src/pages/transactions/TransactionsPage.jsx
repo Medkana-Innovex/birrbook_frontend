@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import api from '../../services/api';
 import AppLayout from '../../components/layout/AppLayout';
 import Spinner from '../../components/ui/Spinner';
 
 function FilterBar({ filters, onChange, onReset }) {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-wrap gap-3 mb-6">
       <select
@@ -11,9 +13,9 @@ function FilterBar({ filters, onChange, onReset }) {
         onChange={e => onChange('direction', e.target.value)}
         className="text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-white outline-none focus:border-[var(--cbe)] text-gray-700 transition-all"
       >
-        <option value="">All directions</option>
-        <option value="IN">Money In</option>
-        <option value="OUT">Money Out</option>
+        <option value="">{t('transactions.allDirections')}</option>
+        <option value="IN">{t('transactions.moneyIn')}</option>
+        <option value="OUT">{t('transactions.moneyOut')}</option>
       </select>
 
       <input
@@ -35,7 +37,7 @@ function FilterBar({ filters, onChange, onReset }) {
           onClick={onReset}
           className="text-sm font-medium text-gray-400 hover:text-gray-600 px-3 py-2.5 rounded-xl hover:bg-gray-100 transition-all"
         >
-          Clear
+          {t('transactions.clear')}
         </button>
       )}
     </div>
@@ -43,6 +45,7 @@ function FilterBar({ filters, onChange, onReset }) {
 }
 
 function TxRow({ tx }) {
+  const { t } = useTranslation();
   const isIn = tx.direction === 'IN';
   return (
     <div className="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0">
@@ -55,14 +58,14 @@ function TxRow({ tx }) {
         </svg>
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-gray-900">{tx.category ?? 'Other'}</p>
+        <p className="text-sm font-bold text-gray-900">{tx.category ?? t('transactions.other')}</p>
         {tx.reason && <p className="text-xs text-gray-400 mt-0.5 truncate">{tx.reason}</p>}
         <p className="text-xs text-gray-300 mt-0.5">
           {new Date(tx.happenedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
         </p>
       </div>
       <p className={`text-sm font-bold shrink-0 ${isIn ? 'text-green-600' : 'text-red-500'}`}>
-        {isIn ? '+' : '-'}{tx.amount.toLocaleString()} ETB
+        {isIn ? '+' : '-'}{tx.amount.toLocaleString()} {t('common.etb')}
       </p>
     </div>
   );
@@ -123,6 +126,7 @@ function Pagination({ page, totalPages, onPage }) {
 const defaultFilters = { direction: '', from: '', to: '' };
 
 export default function TransactionsPage() {
+  const { t } = useTranslation();
   const [transactions, setTransactions] = useState([]);
   const [filters, setFilters] = useState(defaultFilters);
   const [page, setPage] = useState(1);
@@ -170,8 +174,8 @@ export default function TransactionsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Transactions</h1>
-          <p className="text-gray-400 text-sm mt-0.5">{meta.total} total</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('transactions.title')}</h1>
+          <p className="text-gray-400 text-sm mt-0.5">{t('transactions.total', { count: meta.total })}</p>
         </div>
       </div>
 
@@ -188,8 +192,8 @@ export default function TransactionsPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
             </div>
-            <p className="text-sm font-medium text-gray-900">No transactions found</p>
-            <p className="text-xs text-gray-400 mt-1">Try adjusting your filters</p>
+            <p className="text-sm font-medium text-gray-900">{t('transactions.noTransactionsFound')}</p>
+            <p className="text-xs text-gray-400 mt-1">{t('transactions.tryAdjustingFilters')}</p>
           </div>
         ) : (
           <div className="px-5">

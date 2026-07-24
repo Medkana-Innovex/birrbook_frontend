@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import api from '../../services/api';
 import AppLayout from '../../components/layout/AppLayout';
 import Spinner from '../../components/ui/Spinner';
@@ -6,12 +7,13 @@ import Spinner from '../../components/ui/Spinner';
 const currentPeriod = new Date().toISOString().slice(0, 7);
 
 function PeriodSelector({ period, onChange }) {
+  const { i18n } = useTranslation();
   const months = [];
   for (let i = 0; i < 6; i++) {
     const d = new Date();
     d.setMonth(d.getMonth() - i);
     const value = d.toISOString().slice(0, 7);
-    const label = d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+    const label = d.toLocaleDateString(i18n.language === 'am' ? 'am-ET' : 'en-GB', { month: 'long', year: 'numeric' });
     months.push({ value, label });
   }
 
@@ -48,6 +50,7 @@ function SummaryCard({ label, value, color, icon }) {
 }
 
 function BreakdownBar({ category, amount, total }) {
+  const { t } = useTranslation();
   const pct = total > 0 ? Math.round((amount / total) * 100) : 0;
   return (
     <div>
@@ -55,7 +58,7 @@ function BreakdownBar({ category, amount, total }) {
         <span className="text-sm font-medium text-gray-700">{category}</span>
         <div className="flex items-center gap-3">
           <span className="text-xs text-gray-400">{pct}%</span>
-          <span className="text-sm font-semibold text-gray-900">{amount.toLocaleString()} ETB</span>
+          <span className="text-sm font-semibold text-gray-900">{amount.toLocaleString()} {t('common.etb')}</span>
         </div>
       </div>
       <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -69,6 +72,7 @@ function BreakdownBar({ category, amount, total }) {
 }
 
 export default function InsightsPage() {
+  const { t } = useTranslation();
   const [period, setPeriod] = useState(currentPeriod);
   const [insight, setInsight] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -105,8 +109,8 @@ export default function InsightsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Insights</h1>
-          <p className="text-gray-400 text-sm mt-0.5">Monthly spending overview</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('insights.title')}</h1>
+          <p className="text-gray-400 text-sm mt-0.5">{t('insights.subtitle')}</p>
         </div>
         <PeriodSelector period={period} onChange={handlePeriod} />
       </div>
@@ -120,22 +124,22 @@ export default function InsightsPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
-          <p className="text-sm font-semibold text-gray-900">No insight for this period</p>
-          <p className="text-xs text-gray-400 mt-1">Insights are computed automatically when transactions arrive.</p>
+          <p className="text-sm font-semibold text-gray-900">{t('insights.noInsightForPeriod')}</p>
+          <p className="text-xs text-gray-400 mt-1">{t('insights.computedAutomatically')}</p>
         </div>
       ) : (
         <>
           {/* Summary cards */}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             <SummaryCard
-              label="Money In"
-              value={`${(insight.totalIn).toLocaleString()} ETB`}
+              label={t('insights.moneyIn')}
+              value={`${(insight.totalIn).toLocaleString()} ${t('common.etb')}`}
               color="#22c55e"
               icon={<path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />}
             />
             <SummaryCard
-              label="Money Out"
-              value={`${insight.totalOut.toLocaleString()} ETB`}
+              label={t('insights.moneyOut')}
+              value={`${insight.totalOut.toLocaleString()} ${t('common.etb')}`}
               color="#ef4444"
               icon={<path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />}
             />
@@ -146,10 +150,10 @@ export default function InsightsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
                 </div>
-                <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Net</p>
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">{t('insights.net')}</p>
               </div>
               <p className={`text-2xl font-bold ${net >= 0 ? 'text-green-600' : 'text-red-500'}`}>
-                {net >= 0 ? '+' : ''}{net.toLocaleString()} ETB
+                {net >= 0 ? '+' : ''}{net.toLocaleString()} {t('common.etb')}
               </p>
             </div>
           </div>
@@ -163,7 +167,7 @@ export default function InsightsPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-xs text-gray-500 font-medium">Top spending category</p>
+                <p className="text-xs text-gray-500 font-medium">{t('insights.topSpendingCategory')}</p>
                 <p className="text-base font-bold text-gray-900">{insight.topCategory}</p>
               </div>
             </div>
@@ -172,7 +176,7 @@ export default function InsightsPage() {
           {/* Spending breakdown */}
           {breakdownEntries.length > 0 && (
             <div className="bg-white rounded-2xl border border-gray-100 p-6">
-              <h2 className="text-sm font-semibold text-gray-900 mb-6">Spending Breakdown</h2>
+              <h2 className="text-sm font-semibold text-gray-900 mb-6">{t('insights.spendingBreakdown')}</h2>
               <div className="space-y-5">
                 {breakdownEntries.map(([cat, amt]) => (
                   <BreakdownBar key={cat} category={cat} amount={amt} total={totalOut} />

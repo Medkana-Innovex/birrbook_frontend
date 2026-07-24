@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { adminLogout } from '../../store/slices/adminSlice';
 import api from '../../services/api';
 import Spinner from '../../components/ui/Spinner';
+import LanguageSwitcher from '../../components/ui/LanguageSwitcher';
 
 function StatCard({ label, value, sub }) {
   return (
@@ -16,9 +18,10 @@ function StatCard({ label, value, sub }) {
 }
 
 function UserRow({ user }) {
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
   const initials = user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
-  const joined = new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  const joined = new Date(user.createdAt).toLocaleDateString(i18n.language === 'am' ? 'am-ET' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
   return (
     <div className="border-b border-gray-50 last:border-0">
@@ -34,7 +37,7 @@ function UserRow({ user }) {
           <p className="text-xs text-gray-400">{user.phone}</p>
         </div>
         <div className="text-right shrink-0 mr-2">
-          <p className="text-xs text-gray-400">{user.stats.totalTransactions} txns</p>
+          <p className="text-xs text-gray-400">{t('admin.users.txnsShort', { count: user.stats.totalTransactions })}</p>
           <p className="text-xs text-gray-400">{joined}</p>
         </div>
         <svg
@@ -48,12 +51,12 @@ function UserRow({ user }) {
 
       {open && (
         <div className="px-6 pb-5 pt-1 bg-gray-50 grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <Detail label="Full name" value={user.name} />
-          <Detail label="Phone" value={user.phone} />
-          <Detail label="Email" value={user.email || '—'} />
-          <Detail label="Joined" value={joined} />
-          <Detail label="Transactions" value={user.stats.totalTransactions} />
-          <Detail label="User ID" value={user.id.slice(0, 8) + '…'} mono />
+          <Detail label={t('admin.users.fullName')} value={user.name} />
+          <Detail label={t('admin.users.phone')} value={user.phone} />
+          <Detail label={t('admin.users.email')} value={user.email || '—'} />
+          <Detail label={t('admin.users.joined')} value={joined} />
+          <Detail label={t('admin.users.transactions')} value={user.stats.totalTransactions} />
+          <Detail label={t('admin.users.userId')} value={user.id.slice(0, 8) + '…'} mono />
         </div>
       )}
     </div>
@@ -97,6 +100,7 @@ function Pagination({ page, totalPages, onPage }) {
 }
 
 export default function AdminUsersPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -148,42 +152,45 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <span className="font-bold text-gray-900 text-sm">Birrbook</span>
-              <span className="ml-2 text-xs font-medium px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: 'var(--cbe)' }}>Admin</span>
+              <span className="ml-2 text-xs font-medium px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: 'var(--cbe)' }}>{t('admin.users.admin')}</span>
             </div>
           </div>
-          <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-gray-500 hover:text-red-500 transition-colors font-medium">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            Sign out
-          </button>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-gray-500 hover:text-red-500 transition-colors font-medium">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              {t('admin.users.signOut')}
+            </button>
+          </div>
         </div>
       </header>
 
       <div className="max-w-5xl mx-auto px-6 py-8">
 
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Users</h1>
-          <p className="text-gray-400 text-sm mt-0.5">{meta.total} registered users</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('admin.users.title')}</h1>
+          <p className="text-gray-400 text-sm mt-0.5">{t('admin.users.registeredUsers', { count: meta.total })}</p>
         </div>
 
         {loading ? <Spinner /> : (
           <>
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <StatCard label="Total Users" value={meta.total} sub="all time registrations" />
-              <StatCard label="Total Transactions" value={totalTxns} sub="across all users" />
+              <StatCard label={t('admin.users.totalUsers')} value={meta.total} sub={t('admin.users.allTimeRegistrations')} />
+              <StatCard label={t('admin.users.totalTransactions')} value={totalTxns} sub={t('admin.users.acrossAllUsers')} />
             </div>
 
             <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
               <div className="px-6 py-4 border-b border-gray-50 flex items-center justify-between gap-4">
-                <h2 className="text-sm font-semibold text-gray-900 shrink-0">All Users</h2>
+                <h2 className="text-sm font-semibold text-gray-900 shrink-0">{t('admin.users.allUsers')}</h2>
                 <div className="relative w-full max-w-xs">
                   <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" />
                   </svg>
                   <input
                     type="text"
-                    placeholder="Search by name, phone or email…"
+                    placeholder={t('admin.users.searchPlaceholder')}
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl outline-none focus:ring-2 text-gray-700 placeholder-gray-300"
@@ -194,7 +201,7 @@ export default function AdminUsersPage() {
 
               {filtered.length === 0 ? (
                 <p className="text-sm text-gray-400 py-10 text-center">
-                  {search ? 'No users match your search' : 'No users yet'}
+                  {search ? t('admin.users.noUsersMatch') : t('admin.users.noUsersYet')}
                 </p>
               ) : (
                 filtered.map(u => <UserRow key={u.id} user={u} />)

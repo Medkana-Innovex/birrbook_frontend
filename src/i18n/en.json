@@ -1,0 +1,150 @@
+{
+  "common": {
+    "appName": "Birrbook",
+    "tagline": "Personal Finance Tracker",
+    "etb": "ETB",
+    "user": "User"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "transactions": "Transactions",
+    "profile": "Profile"
+  },
+  "auth": {
+    "login": {
+      "welcomeBack": "Welcome\nback.",
+      "signInToContinue": "Sign in to continue tracking your finances with Birrbook.",
+      "signIn": "Sign in",
+      "enterCredentials": "Enter your credentials to continue",
+      "phoneNumber": "Phone number",
+      "password": "Password",
+      "signingIn": "Signing in...",
+      "signInButton": "Sign In",
+      "noAccount": "Don't have an account?",
+      "register": "Register",
+      "invalidCredentials": "Invalid phone number or password."
+    },
+    "register": {
+      "createAccount": "Create account",
+      "startTracking": "Start tracking your finances today",
+      "fullName": "Full name",
+      "phoneNumber": "Phone number",
+      "password": "Password",
+      "creatingAccount": "Creating account...",
+      "createAccountButton": "Create Account",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign In",
+      "registrationFailed": "Registration failed.",
+      "trackUnderstandGrow": "Track.\nUnderstand.\nGrow.",
+      "companion": "Your complete personal finance companion built for Ethiopians."
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Portal",
+      "subtitle": "Sign in with your admin credentials",
+      "phoneNumber": "Phone number",
+      "password": "Password",
+      "signingIn": "Signing in...",
+      "signInButton": "Sign In",
+      "invalidCredentials": "Invalid credentials."
+    },
+    "users": {
+      "title": "Users",
+      "registeredUsers": "{{count}} registered users",
+      "totalUsers": "Total Users",
+      "allTimeRegistrations": "all time registrations",
+      "totalTransactions": "Total Transactions",
+      "acrossAllUsers": "across all users",
+      "allUsers": "All Users",
+      "searchPlaceholder": "Search by name, phone or email…",
+      "noUsersMatch": "No users match your search",
+      "noUsersYet": "No users yet",
+      "signOut": "Sign out",
+      "fullName": "Full name",
+      "phone": "Phone",
+      "email": "Email",
+      "joined": "Joined",
+      "transactions": "Transactions",
+      "userId": "User ID",
+      "txnsShort": "{{count}} txns",
+      "admin": "Admin"
+    }
+  },
+  "dashboard": {
+    "goodMorning": "Good morning",
+    "goodAfternoon": "Good afternoon",
+    "goodEvening": "Good evening",
+    "in": "In",
+    "out": "Out",
+    "net": "Net",
+    "spendingByCategory": "Spending by Category",
+    "inAndOut": "In & Out",
+    "viewAll": "View all",
+    "recentTransactions": "Recent Transactions",
+    "noTransactionsYet": "No transactions yet",
+    "other": "Other",
+    "moneyIn": "Money In",
+    "moneyOut": "Money Out"
+  },
+  "transactions": {
+    "title": "Transactions",
+    "total": "{{count}} total",
+    "allDirections": "All directions",
+    "moneyIn": "Money In",
+    "moneyOut": "Money Out",
+    "clear": "Clear",
+    "noTransactionsFound": "No transactions found",
+    "tryAdjustingFilters": "Try adjusting your filters",
+    "other": "Other"
+  },
+  "insights": {
+    "title": "Insights",
+    "subtitle": "Monthly spending overview",
+    "noInsightForPeriod": "No insight for this period",
+    "computedAutomatically": "Insights are computed automatically when transactions arrive.",
+    "moneyIn": "Money In",
+    "moneyOut": "Money Out",
+    "net": "Net",
+    "topSpendingCategory": "Top spending category",
+    "spendingBreakdown": "Spending Breakdown"
+  },
+  "simulate": {
+    "headerTitle": "CBE Transaction",
+    "headerSubtitle": "Commercial Bank of Ethiopia",
+    "send": "Send",
+    "receive": "Receive",
+    "amount": "Amount",
+    "phoneNumber": "Phone number",
+    "description": "Description",
+    "descriptionPlaceholder": "What is this transaction for? (optional)",
+    "category": "Category",
+    "sendPayment": "Send Payment",
+    "receivePayment": "Receive Payment",
+    "processing": "Processing...",
+    "transactionSuccessful": "Transaction Successful",
+    "paymentSent": "Payment sent",
+    "paymentReceived": "Payment received",
+    "newTransaction": "New Transaction",
+    "invalidAmount": "Enter a valid amount.",
+    "enterPhone": "Enter your phone number.",
+    "transactionFailed": "Transaction failed.",
+    "categories": {
+      "Food": "Food",
+      "Transport": "Transport",
+      "Utilities": "Utilities",
+      "Health": "Health",
+      "Entertainment": "Entertainment",
+      "Shopping": "Shopping",
+      "Education": "Education",
+      "Other": "Other"
+    }
+  },
+  "profile": {
+    "fullName": "Full name",
+    "phone": "Phone",
+    "email": "Email",
+    "memberSince": "Member since",
+    "signOut": "Sign Out"
+  }
+}

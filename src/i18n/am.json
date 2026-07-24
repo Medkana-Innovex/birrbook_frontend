@@ -1,0 +1,150 @@
+{
+  "common": {
+    "appName": "Birrbook",
+    "tagline": "የግል ፋይናንስ መከታተያ",
+    "etb": "ብር",
+    "user": "ተጠቃሚ"
+  },
+  "nav": {
+    "dashboard": "ዳሽቦርድ",
+    "transactions": "ግብይቶች",
+    "profile": "መገለጫ"
+  },
+  "auth": {
+    "login": {
+      "welcomeBack": "እንኳን ደህና\nተመልሰው መጡ።",
+      "signInToContinue": "ፋይናንስዎን በ Birrbook መከታተል ለመቀጠል ይግቡ።",
+      "signIn": "ይግቡ",
+      "enterCredentials": "ለመቀጠል የመግቢያ መረጃዎችዎን ያስገቡ",
+      "phoneNumber": "የስልክ ቁጥር",
+      "password": "ፓስወርድ",
+      "signingIn": "በመግባት ላይ...",
+      "signInButton": "ግባ",
+      "noAccount": "መለያ የለዎትም?",
+      "register": "ይመዝገቡ",
+      "invalidCredentials": "የስልክ ቁጥር ወይም ፓስወርድ ትክክል አይደለም።"
+    },
+    "register": {
+      "createAccount": "መለያ ይፍጠሩ",
+      "startTracking": "ፋይናንስዎን ዛሬ መከታተል ይጀምሩ",
+      "fullName": "ሙሉ ስም",
+      "phoneNumber": "የስልክ ቁጥር",
+      "password": "ፓስወርድ",
+      "creatingAccount": "መለያ በመፍጠር ላይ...",
+      "createAccountButton": "መለያ ይፍጠሩ",
+      "alreadyHaveAccount": "መለያ አለዎት?",
+      "signIn": "ይግቡ",
+      "registrationFailed": "ምዝገባ አልተሳካም።",
+      "trackUnderstandGrow": "ይከታተሉ።\nይረዱ።\nያሳድጉ።",
+      "companion": "ለኢትዮጵያውያን የተሰራ የተሟላ የግል ፋይናንስ ተባባሪዎ።"
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "የአስተዳዳሪ ገጽ",
+      "subtitle": "በአስተዳዳሪ መረጃዎችዎ ይግቡ",
+      "phoneNumber": "የስልክ ቁጥር",
+      "password": "ፓስወርድ",
+      "signingIn": "በመግባት ላይ...",
+      "signInButton": "ይግቡ",
+      "invalidCredentials": "የተሳሳተ መረጃ።"
+    },
+    "users": {
+      "title": "ተጠቃሚዎች",
+      "registeredUsers": "{{count}} የተመዘገቡ ተጠቃሚዎች",
+      "totalUsers": "ጠቅላላ ተጠቃሚዎች",
+      "allTimeRegistrations": "ጠቅላላ ምዝገባዎች",
+      "totalTransactions": "ጠቅላላ ግብይቶች",
+      "acrossAllUsers": "በሁሉም ተጠቃሚዎች",
+      "allUsers": "ሁሉም ተጠቃሚዎች",
+      "searchPlaceholder": "በስም፣ ስልክ ወይም ኢሜይል ይፍልጉ…",
+      "noUsersMatch": "ከፍለጋዎ ጋር የሚዛመድ ተጠቃሚ የለም",
+      "noUsersYet": "እስካሁን ተጠቃሚ የለም",
+      "signOut": "ይውጡ",
+      "fullName": "ሙሉ ስም",
+      "phone": "ስልክ",
+      "email": "ኢሜይል",
+      "joined": "የተመዘገቡበት ቀን",
+      "transactions": "ግብይቶች",
+      "userId": "የተጠቃሚ መታወቂያ",
+      "txnsShort": "{{count}} ግብይቶች",
+      "admin": "አስተዳዳሪ"
+    }
+  },
+  "dashboard": {
+    "goodMorning": "እንደምን አደሩ",
+    "goodAfternoon": "እንደምን ዋሉ",
+    "goodEvening": "እንደምን አመሹ",
+    "in": "ገቢ",
+    "out": "ወጪ",
+    "net": "ተጣራ",
+    "spendingByCategory": "የወጪ ስርጭት በምድብ",
+    "inAndOut": "ገቢ እና ወጪ",
+    "viewAll": "ሁሉንም ይመልከቱ",
+    "recentTransactions": "የቅርብ ጊዜ ግብይቶች",
+    "noTransactionsYet": "እስካሁን ግብይት የለም",
+    "other": "ሌላ",
+    "moneyIn": "ገቢ",
+    "moneyOut": "ወጪ"
+  },
+  "transactions": {
+    "title": "ግብይቶች",
+    "total": "{{count}} ጠቅላላ",
+    "allDirections": "ሁሉም አቅጣጫዎች",
+    "moneyIn": "ገቢ",
+    "moneyOut": "ወጪ",
+    "clear": "ያጽዱ",
+    "noTransactionsFound": "ግብይት አልተገኘም",
+    "tryAdjustingFilters": "ማጣሪያዎችን ለማስተካከል ይሞክሩ",
+    "other": "ሌላ"
+  },
+  "insights": {
+    "title": "ትንታኔዎች",
+    "subtitle": "ወራዊ የወጪ አጠቃላይ እይታ",
+    "noInsightForPeriod": "ለዚህ ወቅት ትንታኔ የለም",
+    "computedAutomatically": "ግብይቶች ሲደርሱ ትንታኔዎች በራስ-ሰር ይሰላሉ።",
+    "moneyIn": "ገቢ",
+    "moneyOut": "ወጪ",
+    "net": "ተጣራ",
+    "topSpendingCategory": "ከፍተኛ ወጪ ምድብ",
+    "spendingBreakdown": "የወጪ ዝርዝር"
+  },
+  "simulate": {
+    "headerTitle": "የCBE ግብይት",
+    "headerSubtitle": "ንግድ ባንክ ኢትዮጵያ",
+    "send": "ላክ",
+    "receive": "ተቀበል",
+    "amount": "መጠን",
+    "phoneNumber": "የስልክ ቁጥር",
+    "description": "መግለጫ",
+    "descriptionPlaceholder": "ይህ ግብይት ለምንድን ነው? (አማራጭ)",
+    "category": "ምድብ",
+    "sendPayment": "ክፍያ ይላኩ",
+    "receivePayment": "ክፍያ ይቀበሉ",
+    "processing": "በሂደት ላይ...",
+    "transactionSuccessful": "ግብይት ተከናውኗል",
+    "paymentSent": "ክፍያ ተልኳል",
+    "paymentReceived": "ክፍያ ተቀብለዋል",
+    "newTransaction": "አዲስ ግብይት",
+    "invalidAmount": "ትክክለኛ መጠን ያስገቡ።",
+    "enterPhone": "የስልክ ቁጥርዎን ያስገቡ።",
+    "transactionFailed": "ግብይቱ አልተሳካም።",
+    "categories": {
+      "Food": "ምግብ",
+      "Transport": "መጓጓዣ",
+      "Utilities": "የመገልገያ ክፍያዎች",
+      "Health": "ጤና",
+      "Entertainment": "መዝናኛ",
+      "Shopping": "ግዢ",
+      "Education": "ትምህርት",
+      "Other": "ሌላ"
+    }
+  },
+  "profile": {
+    "fullName": "ሙሉ ስም",
+    "phone": "ስልክ",
+    "email": "ኢሜይል",
+    "memberSince": "አባል ከሆኑበት ጊዜ",
+    "signOut": "ይውጡ"
+  }
+}

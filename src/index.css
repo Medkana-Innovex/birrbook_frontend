@@ -3,10 +3,20 @@
 @tailwind utilities;
 
 :root {
+  /* cbe branding
   --cbe: #C040BE;
   --cbe-dark: #A02FA0;
   --cbe-light: #D060D0;
-  --cbe-muted: rgba(192, 64, 190, 0.12);
+  --cbe-rgb: 192, 64, 190;
+  */
+
+  /* tele branding */
+  --cbe: #8dc63f;
+  --cbe-dark: #557d24;
+  --cbe-light: #b3de65;
+  --cbe-rgb: 141, 198, 63;
+
+  --cbe-muted: rgba(var(--cbe-rgb), 0.12);
 }
 
 * {
